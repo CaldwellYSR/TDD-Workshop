@@ -1,73 +1,120 @@
-var alignments =["Good", "Neutral", "Evil"];
+const Ability = require('./ability');
 
-var alignmentTypes = {
+const alignments = ["Good", "Neutral", "Evil"];
+
+const alignmentTypes = {
   Good: 0,
   Neutral: 1,
   Evil: 2
 }
 
-function Character(name, alignment) {
-  if(!this.validateAlignment(alignment)) {
-    alignment = alignmentTypes.Good;
+class Character {
+  constructor(name, alignment) {
+    if(!this.validateAlignment(alignment)) {
+      alignment = alignmentTypes.Good;
+    }
+    this._name = name;
+    this._alignment = alignments[alignment];
+    this._strength = new Ability();
+    this._dexterity = new Ability();
+    this._constitution = new Ability();
+    this._intelligence = new Ability();
+    this._wisdom = new Ability();
+    this._charisma = new Ability();
+    this._armorClass = 10;
+    this._hitPoints = 5 + this._constitution.modifier;
   }
-  this.name = name;
-  this.alignment = alignments[alignment];
-  this.armorClass = 10;
-  this.hitPoints = 5;
-}
 
-Character.prototype.getName = function() {
-  return this.name;
-}
-
-Character.prototype.setName = function(name) {
-  this.name = name;
-}
-
-Character.prototype.getArmorClass = function() {
-  return this.armorClass;
-}
-
-Character.prototype.setArmorClass = function(armorClass) {
-  this.armorClass = armorClass;
-}
-
-Character.prototype.getHitPoints = function() {
-  return this.hitPoints;
-}
-
-Character.prototype.setHitPoints = function(hitPoints){
-  this.hitPoints = hitPoints;
-}
-
-Character.prototype.validateAlignment = function(alignment) {
-  return typeof alignment == 'number' && Number.isInteger(alignment) && alignment >= alignmentTypes.Good && alignment <= alignmentTypes.Evil;
-}
-
-Character.prototype.getAlignment = function() {
-  return this.alignment;
-}
-
-Character.prototype.setAlignment = function(alignment){
-  if(!this.validateAlignment(alignment)) {
-    throw "That is not a valid alignment you goon! Valid alignments are [Good, Neutral, Evil] - Use alignmentTypes object as a helper"
+  get name() {
+    return this._name;
   }
-  this.alignment = alignments[alignment];
-}
 
-Character.prototype.isHit = function(dieRoll) {
-  return dieRoll >= this.getArmorClass();
-}
-
-Character.prototype.takeDamage = function(damage) {
-  this.setHitPoints(this.getHitPoints() - damage);
-  if (this.getHitPoints() < 0) {
-    this.setHitPoints(0);
+  set name(name) {
+    this._name = name;
   }
-}
 
-Character.prototype.isAlive = function(){
-  return this.getHitPoints() > 0;
+  get armorClass() {
+    return this._armorClass;
+  }
+
+  set armorClass(armorClass) {
+    this._armorClass = armorClass;
+  }
+
+  get hitPoints() {
+    return this._hitPoints;
+  }
+
+  set hitPoints(hitPoints){
+    this._hitPoints = hitPoints;
+    if (this._hitPoints < 0) {
+      this._hitPoints = 0;
+    }
+  }
+
+  get strength() {
+    return this._strength;
+  }
+
+  get dexterity() {
+    return this._dexterity;
+  }
+  
+  get constitution() {
+    return this._constitution;
+  }
+
+  set constitution(score) {
+    this._constitution.score = score;
+    this.hitPoints = Math.max(1, this.hitPoints + this.constitution.modifier);
+  }
+  
+  get intelligence() {
+    return this._intelligence;
+  }
+  
+  get wisdom() {
+    return this._wisdom;
+  }
+  
+  get charisma() {
+    return this._charisma;
+  }
+  validateAlignment(alignment) {
+    return typeof alignment == 'number' && Number.isInteger(alignment) && alignment >= alignmentTypes.Good && alignment <= alignmentTypes.Evil;
+  }
+
+  get alignment() {
+    return this._alignment;
+  }
+
+  set alignment(alignment){
+    if(!this.validateAlignment(alignment)) {
+      throw "That is not a valid alignment you goon! Valid alignments are [Good, Neutral, Evil] - Use alignmentTypes object as a helper"
+    }
+    this._alignment = alignments[alignment];
+  }
+
+  isHit(dieRoll) {
+    return dieRoll >= this._armorClass;
+  }
+
+  takeDamage(damage) {
+    this.hitPoints -= damage;
+  }
+
+  isAlive(){
+    return this.hitPoints > 0;
+  }
+
+  attack(opponent, dieRoll) {
+    if(dieRoll == 20) {
+      return opponent.takeDamage(2);
+    }
+    if(opponent.isHit(dieRoll)) {
+      opponent.takeDamage(1);
+    }
+  }
 }
 
 module.exports = {

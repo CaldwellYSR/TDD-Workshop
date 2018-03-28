@@ -1,5 +1,6 @@
-var Character = require('../src/character.js').character;
-var alignmentTypes = require('../src/character.js').alignmentTypes;
+const Character = require('../src/character').character;
+const alignmentTypes = require('../src/character').alignmentTypes;
+const Ability = require('../src/ability')
 
 describe("Character", function() {
 
@@ -10,14 +11,14 @@ describe("Character", function() {
   describe("Name", function() {
     describe("getName()", function() {
       it('should return the name', function() {
-        expect(this.character.getName()).toBe("George");
+        expect(this.character.name).toBe("George");
       });
     });
 
     describe("setName()", function() {
       it('should set the name', function(){
-        this.character.setName("Fred");
-        expect(this.character.getName()).toBe("Fred");
+        this.character.name = "Fred";
+        expect(this.character.name).toBe("Fred");
       });
     });
   });
@@ -25,14 +26,14 @@ describe("Character", function() {
   describe("Alignment", function() {
     describe("getAlignment()", function() {
       it('should return the alignment', function() {
-        expect(this.character.getAlignment()).toBe("Good");
+        expect(this.character.alignment).toBe("Good");
       });
     });
 
     describe("setAlignemnt()", function(){
       it('should set the alignment to Evil', function(){
-        this.character.setAlignment(alignmentTypes.Evil);
-        expect(this.character.getAlignment()).toBe("Evil");
+        this.character.alignment = alignmentTypes.Evil;
+        expect(this.character.alignment).toBe("Evil");
       });
     });
 
@@ -63,25 +64,35 @@ describe("Character", function() {
 
   describe("Armor Class", function() {
     it('should have a default AC of 10', function() {
-      expect(this.character.getArmorClass()).toBe(10);
+      expect(this.character.armorClass).toBe(10);
     });
     it('should set AC to new value (15)',function(){
-      this.character.setArmorClass(15)
-      expect(this.character.getArmorClass()).toBe(15)
+      this.character.armorClass = 15;
+      expect(this.character.armorClass).toBe(15)
     });
   });
 
   describe("Hit Points", function() {
     it('should have default HP of 5', function() {
-      expect(this.character.getHitPoints()).toBe(5);
+      expect(this.character.hitPoints).toBe(5);
     });
     it('should set the HP to 10', function(){
-      this.character.setHitPoints(10);
-      expect(this.character.getHitPoints()).toBe(10);
+      this.character.hitPoints = 10;
+      expect(this.character.hitPoints).toBe(10);
     });
     it('should set HP to zero if given negative number', function() {
-
+      this.character.hitPoints = -10;
+      expect(this.character.hitPoints).toBe(0)
     });
+    // it('should add constitution modifier to HP', function() {
+    //   this.character.constitution.score = 12; // This makes modifier 1
+    //   expect(this.character.hitPoints).toBe(6);
+    // });
+    // it('should account for constitution modifier when calculating the death limit', function(){
+    //   this.character.constitution.score = 12; // This makes modifier 1
+    //   this.character.takeDamage(5);
+    //   expect(this.character.hitPoints).toBe(1);
+    // });
   });
 
   describe("isHit", function() {
@@ -99,21 +110,64 @@ describe("Character", function() {
   describe("takeDamage", function() {
     it('should reduce hp by given value', function() {
       this.character.takeDamage(2);
-      expect(this.character.getHitPoints()).toBe(3);
+      expect(this.character.hitPoints).toBe(3);
     });
     it('should not reduce hp below 0', function() {
       this.character.takeDamage(10);
-      expect(this.character.getHitPoints()).toBe(0);
+      expect(this.character.hitPoints).toBe(0);
     });
   });
+
   describe("isAlive", function(){
     it('should return true if hitpoints are greater than 0', function(){
       expect(this.character.isAlive()).toBe(true);
     });
     it('should return false if hitPoints are zero', function() {
-      this.character.setHitPoints(0);
+      this.character.hitPoints = 0;
       expect(this.character.isAlive()).toBe(false);
     });
   });
 
+  describe("attack", function() {
+    it('should damage opponent by 1 point if dieroll beats AC', function() {
+      var opponent = new Character("Fred");
+      this.character.attack(opponent, 15);
+      expect(opponent.hitPoints).toBe(4);
+    });
+    it('should damage opponent by 2 if dieroll is a natural 20', function(){
+      var opponent = new Character("Fred");
+      opponent.armorClass = 23;
+      this.character.attack(opponent,20);
+      expect(opponent.hitPoints).toBe(3);
+    });
+  });
+
+  describe("Abilities", function(){
+    const abilities = [
+      "strength",
+      "dexterity",
+      "constitution",
+      "intelligence",
+      "wisdom",
+      "charisma"
+    ];
+
+    abilities.map(ability => {
+      it(`should have ${ability}`,function(){
+        expect(this.character[ability]).toEqual(jasmine.any(Ability));
+      });
+    });
+    it('should change the value of the consitution',function(){
+      this.character.constitution = 12;
+      expect(this.character.constitution.score).toBe(12);
+    });
+    it('should update the character\'s hitPoints', function() {
+      this.character.constitution = 12;
+      expect(this.character.hitPoints).toBe(6);
+    });
+    it('should always add at least 1 point for constitution', function(){
+      this.character.constitution = 1;
+      expect(this.character.hitPoints).toBe(1);
+    });
+  });
 });
