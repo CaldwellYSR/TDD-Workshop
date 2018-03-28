@@ -71,4 +71,49 @@ describe("Character", function() {
     });
   });
 
+  describe("Hit Points", function() {
+    it('should have default HP of 5', function() {
+      expect(this.character.getHitPoints()).toBe(5);
+    });
+    it('should set the HP to 10', function(){
+      this.character.setHitPoints(10);
+      expect(this.character.getHitPoints()).toBe(10);
+    });
+    it('should set HP to zero if given negative number', function() {
+
+    });
+  });
+
+  describe("isHit", function() {
+    it('should return true if die roll meets AC', function() {
+      expect(this.character.isHit(10)).toBe(true);
+    });
+    it('should return true if die roll is greater than  AC', function() {
+      expect(this.character.isHit(15)).toBe(true);
+    });
+    it('should return false if die roll does not meet or beat AC', function() {
+      expect(this.character.isHit(5)).toBe(false);
+    });
+  });
+
+  describe("takeDamage", function() {
+    it('should reduce hp by given value', function() {
+      this.character.takeDamage(2);
+      expect(this.character.getHitPoints()).toBe(3);
+    });
+    it('should not reduce hp below 0', function() {
+      this.character.takeDamage(10);
+      expect(this.character.getHitPoints()).toBe(0);
+    });
+  });
+  describe("isAlive", function(){
+    it('should return true if hitpoints are greater than 0', function(){
+      expect(this.character.isAlive()).toBe(true);
+    });
+    it('should return false if hitPoints are zero', function() {
+      this.character.setHitPoints(0);
+      expect(this.character.isAlive()).toBe(false);
+    });
+  });
+
 });
