@@ -12,6 +12,7 @@ function Character(name, alignment) {
   }
   this.name = name;
   this.alignment = alignments[alignment];
+  this.armorClass = 10;
 }
 
 Character.prototype.getName = function() {
@@ -20,6 +21,14 @@ Character.prototype.getName = function() {
 
 Character.prototype.setName = function(name) {
   this.name = name;
+}
+
+Character.prototype.getArmorClass = function() {
+  return this.armorClass;
+}
+
+Character.prototype.setArmorClass = function(armorClass) {
+  this.armorClass = armorClass;
 }
 
 Character.prototype.validateAlignment = function(alignment) {

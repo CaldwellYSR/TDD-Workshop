@@ -8,7 +8,6 @@ describe("Character", function() {
   });
 
   describe("Name", function() {
-
     describe("getName()", function() {
       it('should return the name', function() {
         expect(this.character.getName()).toBe("George");
@@ -21,11 +20,9 @@ describe("Character", function() {
         expect(this.character.getName()).toBe("Fred");
       });
     });
-
   });
 
   describe("Alignment", function() {
-
     describe("getAlignment()", function() {
       it('should return the alignment', function() {
         expect(this.character.getAlignment()).toBe("Good");
@@ -62,7 +59,16 @@ describe("Character", function() {
         expect(this.character.validateAlignment(1.1)).toBe(false);
       });
     });
+  });
 
+  describe("Armor Class", function() {
+    it('should have a default AC of 10', function() {
+      expect(this.character.getArmorClass()).toBe(10);
+    });
+    it('should set AC to new value (15)',function(){
+      this.character.setArmorClass(15)
+      expect(this.character.getArmorClass()).toBe(15)
+    });
   });
 
 });
