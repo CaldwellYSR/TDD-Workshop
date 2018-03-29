@@ -144,6 +144,22 @@ describe("Character", function() {
       this.character.attack(opponent,20);
       expect(opponent.hitPoints).toBe(3);
     });
+    it('should add strength modifier to damage dealth', function() {
+      var opponent = new Character("Fred");
+
+      // Should do 2 damage (strenght modifier is 1)
+      this.character.strength = 12;
+      this.character.attack(opponent, 15);
+      expect(opponent.hitPoints).toBe(3);
+    });
+    it('should add double strength modifier to critical damage dealth', function() {
+      var opponent = new Character("Fred");
+
+      // Should do 2 damage (strenght modifier is 1)
+      this.character.strength = 12;
+      this.character.attack(opponent, 20);
+      expect(opponent.hitPoints).toBe(1);
+    });
   });
 
   describe("Abilities", function(){

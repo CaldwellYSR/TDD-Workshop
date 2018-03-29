@@ -56,6 +56,10 @@ class Character {
     return this._strength;
   }
 
+  set strength(score) {
+    this._strength.score = score;
+  }
+
   get dexterity() {
     return this._dexterity;
   }
@@ -113,11 +117,14 @@ class Character {
   }
 
   attack(opponent, dieRoll) {
+    let damage = Math.max(1, 1 + this._strength.modifier);
+
     if(dieRoll == 20) {
-      return opponent.takeDamage(2);
+      damage = 2 + (this._strength.modifier * 2);
+      return opponent.takeDamage(damage);
     }
     if(opponent.isHit(dieRoll)) {
-      opponent.takeDamage(1);
+      opponent.takeDamage(damage);
     }
   }
 }
