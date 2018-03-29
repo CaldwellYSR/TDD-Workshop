@@ -60,6 +60,11 @@ class Character {
     return this._dexterity;
   }
 
+  set dexterity(score) {
+    this._dexterity.score = score;
+    this.armorClass += this.dexterity.modifier;
+  }
+
   get constitution() {
     return this._constitution;
   }

@@ -66,9 +66,13 @@ describe("Character", function() {
     it('should have a default AC of 10', function() {
       expect(this.character.armorClass).toBe(10);
     });
-    it('should set AC to new value (15)',function(){
+    it('should set AC to new value (15)',function() {
       this.character.armorClass = 15;
-      expect(this.character.armorClass).toBe(15)
+      expect(this.character.armorClass).toBe(15);
+    });
+    it('should add dex modifier to AC value', function() {
+      this.character.dexterity = 12; // Makes modifier +1
+      expect(this.character.armorClass).toBe(11);
     });
   });
 
