@@ -168,6 +168,14 @@ describe("Character", function() {
       this.character.attack(opponent, 15);
       expect(opponent.hitPoints).toBe(4);
     });
+    it('should have a minimum damage of 1 even if modifier is negative', function() {
+      var opponent = new Character("Fred");
+
+      // Should do 1 damage (strength modifier is -5)
+      this.character.strength = 1;
+      this.character.attack(opponent, 20);
+      expect(opponent.hitPoints).toBe(4);
+    });
   });
 
   describe("Abilities", function(){

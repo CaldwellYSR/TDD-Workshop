@@ -120,7 +120,7 @@ class Character {
     let damage = Math.max(1, 1 + this._strength.modifier);
 
     if(dieRoll == 20) {
-      damage = 2 + (this._strength.modifier * 2);
+      damage = Math.max(1, 2 + (this._strength.modifier * 2));
       return opponent.takeDamage(damage);
     }
     if(opponent.isHit(dieRoll)) {
