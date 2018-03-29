@@ -117,15 +117,16 @@ class Character {
   }
 
   attack(opponent, dieRoll) {
-    let damage = Math.max(1, 1 + this._strength.modifier);
+    if (!opponent.isHit(dieRoll) && dieRoll != 20) {
+      return
+    }
 
-    if(dieRoll == 20) {
-      damage = Math.max(1, 2 + (this._strength.modifier * 2));
-      return opponent.takeDamage(damage);
-    }
-    if(opponent.isHit(dieRoll)) {
-      opponent.takeDamage(damage);
-    }
+    let damage =
+      (dieRoll == 20)
+        ? Math.max(1, 2 + (this._strength.modifier * 2))
+        : Math.max(1, 1 + this._strength.modifier);
+
+    opponent.takeDamage(damage);
   }
 }
 
