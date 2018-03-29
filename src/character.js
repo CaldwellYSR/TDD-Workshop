@@ -59,7 +59,7 @@ class Character {
   get dexterity() {
     return this._dexterity;
   }
-  
+
   get constitution() {
     return this._constitution;
   }
@@ -68,15 +68,15 @@ class Character {
     this._constitution.score = score;
     this.hitPoints = Math.max(1, this.hitPoints + this.constitution.modifier);
   }
-  
+
   get intelligence() {
     return this._intelligence;
   }
-  
+
   get wisdom() {
     return this._wisdom;
   }
-  
+
   get charisma() {
     return this._charisma;
   }

@@ -84,15 +84,15 @@ describe("Character", function() {
       this.character.hitPoints = -10;
       expect(this.character.hitPoints).toBe(0)
     });
-    // it('should add constitution modifier to HP', function() {
-    //   this.character.constitution.score = 12; // This makes modifier 1
-    //   expect(this.character.hitPoints).toBe(6);
-    // });
-    // it('should account for constitution modifier when calculating the death limit', function(){
-    //   this.character.constitution.score = 12; // This makes modifier 1
-    //   this.character.takeDamage(5);
-    //   expect(this.character.hitPoints).toBe(1);
-    // });
+    it('should add constitution modifier to HP', function() {
+      this.character.constitution = 12; // This makes modifier 1
+      expect(this.character.hitPoints).toBe(6);
+    });
+    it('should account for constitution modifier when calculating the death limit', function(){
+      this.character.constitution = 12; // This makes modifier 1
+      this.character.takeDamage(5);
+      expect(this.character.hitPoints).toBe(1);
+    });
   });
 
   describe("isHit", function() {
