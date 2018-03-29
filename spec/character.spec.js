@@ -133,48 +133,39 @@ describe("Character", function() {
   });
 
   describe("attack", function() {
+
+    beforeEach(function() {
+      this.opponent = new Character("Fred");
+    });
+
     it('should damage opponent by 1 point if dieroll beats AC', function() {
-      var opponent = new Character("Fred");
-      this.character.attack(opponent, 15);
-      expect(opponent.hitPoints).toBe(4);
+      this.character.attack(this.opponent, 15);
+      expect(this.opponent.hitPoints).toBe(4);
     });
     it('should damage opponent by 2 if dieroll is a natural 20', function(){
-      var opponent = new Character("Fred");
-      opponent.armorClass = 23;
-      this.character.attack(opponent,20);
-      expect(opponent.hitPoints).toBe(3);
+      this.opponent.armorClass = 23;
+      this.character.attack(this.opponent,20);
+      expect(this.opponent.hitPoints).toBe(3);
     });
     it('should add strength modifier to damage dealth', function() {
-      var opponent = new Character("Fred");
-
-      // Should do 2 damage (strength modifier is 1)
       this.character.strength = 12;
-      this.character.attack(opponent, 15);
-      expect(opponent.hitPoints).toBe(3);
+      this.character.attack(this.opponent, 15);
+      expect(this.opponent.hitPoints).toBe(3);
     });
     it('should add double strength modifier to critical damage dealth', function() {
-      var opponent = new Character("Fred");
-
-      // Should do 2 damage (strength modifier is 1)
       this.character.strength = 12;
-      this.character.attack(opponent, 20);
-      expect(opponent.hitPoints).toBe(1);
+      this.character.attack(this.opponent, 20);
+      expect(this.opponent.hitPoints).toBe(1);
     });
     it('should have a minimum damage of 1 even if modifier is negative', function() {
-      var opponent = new Character("Fred");
-
-      // Should do 1 damage (strength modifier is -5)
       this.character.strength = 1;
-      this.character.attack(opponent, 15);
-      expect(opponent.hitPoints).toBe(4);
+      this.character.attack(this.opponent, 15);
+      expect(this.opponent.hitPoints).toBe(4);
     });
     it('should have a minimum damage of 1 even if modifier is negative', function() {
-      var opponent = new Character("Fred");
-
-      // Should do 1 damage (strength modifier is -5)
       this.character.strength = 1;
-      this.character.attack(opponent, 20);
-      expect(opponent.hitPoints).toBe(4);
+      this.character.attack(this.opponent, 20);
+      expect(this.opponent.hitPoints).toBe(4);
     });
   });
 
