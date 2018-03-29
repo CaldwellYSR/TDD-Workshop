@@ -133,7 +133,6 @@ describe("Character", function() {
   });
 
   describe("attack", function() {
-
     beforeEach(function() {
       this.opponent = new Character("Fred");
     });
@@ -169,7 +168,7 @@ describe("Character", function() {
     });
   });
 
-  describe("Abilities", function(){
+  describe("Abilities", function() {
     const abilities = [
       "strength",
       "dexterity",
@@ -195,6 +194,21 @@ describe("Character", function() {
     it('should always add at least 1 point for constitution', function(){
       this.character.constitution = 1;
       expect(this.character.hitPoints).toBe(1);
+    });
+  });
+
+  describe("Experience", function() {
+    it('should start with 0 experience', function() {
+      expect(this.character.experience).toBe(0);
+    });
+    it('should be able to gain experience', function() {
+      this.character.gainExperience(10);
+      expect(this.character.experience).toBe(10);
+    });
+    it('should gain 10 experience on a successful attack', function() {
+      const opponent = new Character("Fred");
+      this.character.attack(opponent, 15);
+      expect(this.character.experience).toBe(10);
     });
   });
 });

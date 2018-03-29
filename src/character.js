@@ -15,6 +15,7 @@ class Character {
     }
     this._name = name;
     this._alignment = alignments[alignment];
+    this._experience = 0;
     this._strength = new Ability();
     this._dexterity = new Ability();
     this._constitution = new Ability();
@@ -50,6 +51,18 @@ class Character {
     if (this._hitPoints < 0) {
       this._hitPoints = 0;
     }
+  }
+
+  get experience() {
+    return this._experience;
+  }
+
+  set experience(value) {
+    this._experience = value;
+  }
+
+  gainExperience(value) {
+    this.experience += value;
   }
 
   get strength() {
@@ -120,6 +133,8 @@ class Character {
     if (!opponent.isHit(dieRoll) && dieRoll != 20) {
       return
     }
+
+    this.gainExperience(10);
 
     let damage =
       (dieRoll == 20)
