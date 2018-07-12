@@ -211,4 +211,24 @@ describe("Character", function() {
       expect(this.character.experience).toBe(10);
     });
   });
+
+  describe("Levels", function() {
+    it('should start as level 1', function() {
+      expect(this.character.level).toBe(1);
+    });
+    it('should be level 2 after 1000xp', function() {
+      this.character.gainExperience(1000);
+      expect(this.character.level).toBe(2);
+    });
+    it('should increase hit points', function() {
+      this.character.level = 2;
+      expect(this.character.hitPoints).toBe(10);
+    });
+    it('should increase damage by 1 for each even level', function() {
+      this.opponent = new Character("Fred");
+      this.character.gainExperience(3000);
+      this.character.attack(this.opponent, 15);
+      expect(this.opponent.hitPoints).toBe(2);
+    });
+  });
 });

@@ -24,6 +24,7 @@ class Character {
     this._charisma = new Ability();
     this._armorClass = 10;
     this._hitPoints = 5 + this._constitution.modifier;
+    this._level = 1;
   }
 
   get name() {
@@ -61,7 +62,17 @@ class Character {
     this._experience = value;
   }
 
+  get level() {
+    return this._level;
+  }
+
+  set level(value) {
+    this.hitPoints = 5 * value + this.constitution.modifier;
+    this._level = value
+  }
+
   gainExperience(value) {
+    this.level = Math.floor((this.experience + value + 1000) * .001);
     this.experience += value;
   }
 
@@ -136,12 +147,14 @@ class Character {
 
     this.gainExperience(10);
 
+    let levelDamage = Math.floor(this.level * 0.5);
+
     let damage =
       (dieRoll == 20)
-        ? Math.max(1, 2 + (this._strength.modifier * 2))
-        : Math.max(1, 1 + this._strength.modifier);
+        ? Math.max(1, 2 + (this._strength.modifier * 2) + levelDamage)
+        : Math.max(1, 1 + this._strength.modifier + levelDamage);
 
-    opponent.takeDamage(damage);
+        opponent.takeDamage(damage);
   }
 }
 
